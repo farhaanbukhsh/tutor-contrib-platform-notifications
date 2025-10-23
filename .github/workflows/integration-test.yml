@@ -1,0 +1,39 @@
+name: Tutor Integration Test
+
+on:
+  pull_request:
+    paths-ignore:
+      - .github/**
+      - .ci/**
+      - .gitignore
+      - CHANGELOG.md
+      - setup.cfg
+      - tutornotifications/__about__.py
+
+env:
+  TUTOR_ROOT: ./.ci/
+
+jobs:
+  local:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: setup python
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.12
+      - name: Install tutor-contrib-notifications
+        run: pip install -e .
+      - name: Tutor config save
+        run: tutor config save
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Tutor build images
+        run: tutor images build mfe
+      - name: Tutor start
+        run: tutor local start -d
+      - name: Tutor init
+        run: tutor local do init
+      - name: Tutor stop
+        run: tutor local stop
