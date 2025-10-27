@@ -7,6 +7,7 @@ authors = [
   { name = "Ty Hob"},
   { name = "OpenCraft", email = "help@opencraft.com" },
 ]
+dynamic = ["version"]
 license = { text = "AGPL-3.0-only" }
 maintainers = [
     { name = "OpenCraft", email = "help@opencraft.com" },
@@ -29,9 +30,8 @@ classifiers = [
 ]
 dependencies = [
     "tutor @ git+https://github.com/overhangio/tutor.git@ulmo",
-    "tutor-mfe @ git+https://github.com/overhangio/tutor-mfe.git@ulmo",
+    "tutor-mfe @ git+https://github.com/overhangio/tutor-mfe.git",
 ]
-
 
 [project.optional-dependencies]
 dev = [
@@ -48,3 +48,6 @@ Source = "https://github.com/openedx/tutor-contrib-notifications"
 
 [project.entry-points."tutor.plugin.v1"]
 notifications = "tutornotifications.plugin"
+
+[tool.setuptools.dynamic]
+version = {attr = "tutornotifications.__about__.__version__"}
